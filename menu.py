@@ -1,16 +1,27 @@
-
 import streamlit as st
 
 def show(change_page):
     # Barra superior con mensaje de bienvenida
     st.markdown("""
-        <div style="background-color: #00695C; padding: 10px; text-align: center; border-radius: 5px;">
-            <h1 style="color: white; margin: 0;">Bienvenid@, Usuario!</h1>
+        <style>
+        .top-bar {
+            background-color: #00695C;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            width: 100%;
+        }
+        </style>
+        <div class="top-bar">
+            Bienvenid@, Usuario!
         </div>
     """, unsafe_allow_html=True)
 
     # Espacio
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
     # Botones organizados en dos columnas
     st.markdown("### Accede a:")
@@ -67,3 +78,4 @@ def show(change_page):
             </form>
         </div>
     """, unsafe_allow_html=True)
+
