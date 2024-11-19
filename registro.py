@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import os
@@ -18,16 +17,24 @@ def show(change_page):
     password = st.text_input("Contraseña", placeholder="••••••••", type="password")
 
     # Botón para registrar
-    if st.button("🟢 Siguiente", use_container_width=True):
-        # Guardar datos en la base de datos
-        new_user = pd.DataFrame({"email": [email], "usuario": [usuario], "password": [password]})
-        existing_users = pd.read_csv(db_file)
-        updated_users = pd.concat([existing_users, new_user], ignore_index=True)
-        updated_users.to_csv(db_file, index=False)
-        st.success("¡Registro exitoso!")
-        change_page("menu")  # Cambiar a la página del menú principal
+    if st.button("🟢 Registrarse", use_container_width=True):
+        try:
+            # Cargar la base de datos
+            users = pd.read_csv(db_file)
 
-    # Botón para ir al login
-    st.markdown("<p style='text-align: center;'>¿Ya tienes una cuenta?</p>", unsafe_allow_html=True)
-    if st.button("🟣 Ingresa", use_container_width=True):
-        change_page("login")  # Cambiar a la página de login
+            # Verificar si el correo ya existe
+            if email in users["email"].values:
+                st.error("El correo ya existe. Intenta con otro.")
+                return
+
+            # Registrar al nuevo usuario
+            new_user = pd.DataFrame({"email": [email], "usuario": [usuario], "password": [password]})
+            updated_users = pd.concat([users, new_user], ignore_index=True)
+            updated_users.to_csv(db_file, index=False)
+            st.success("¡Registro exitoso!")
+
+            # Redirigir al login
+            change_page("login")
+
+        except Exception as e:
+            st.error(f"Hubo un error al registrar: {e}")
